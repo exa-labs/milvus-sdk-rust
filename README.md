@@ -1,7 +1,7 @@
 # Milvus Rust SDK
 Rust SDK for Milvus.
 
-**This is still in progress, but should be already to run in your production environemnt*
+**This is still in progress, but should be already to run in your production environemnt, we are actively looking for maintainers of this repo **
 
 ## Get Started
 Add the SDK into your project:
