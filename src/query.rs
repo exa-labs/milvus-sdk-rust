@@ -1793,11 +1793,12 @@ fn get_place_holder_value(vectors: &Vec<Value>) -> Result<PlaceholderValue> {
 
     match vectors[0] {
         Value::FloatArray(_) => place_holder.r#type = PlaceholderType::FloatVector as _,
+        Value::Float16Array(_) => place_holder.r#type = PlaceholderType::Float16Vector as _,
         Value::Binary(_) => place_holder.r#type = PlaceholderType::BinaryVector as _,
         _ => {
             return Err(SuperError::from(crate::collection::Error::IllegalType(
                 "place holder".to_string(),
-                vec![DataType::BinaryVector, DataType::FloatVector],
+                vec![DataType::BinaryVector, DataType::FloatVector, DataType::Float16Vector],
             )))
         }
     };
@@ -1811,11 +1812,15 @@ fn get_place_holder_value(vectors: &Vec<Value>) -> Result<PlaceholderValue> {
                 }
                 place_holder.values.push(bytes)
             }
+            (Value::Float16Array(d), Value::Float16Array(_)) => {
+                // Float16 is already in bytes format
+                place_holder.values.push(d.to_vec())
+            }
             (Value::Binary(d), Value::Binary(_)) => place_holder.values.push(d.to_vec()),
             _ => {
                 return Err(SuperError::from(crate::collection::Error::IllegalType(
                     "place holder".to_string(),
-                    vec![DataType::BinaryVector, DataType::FloatVector],
+                    vec![DataType::BinaryVector, DataType::FloatVector, DataType::Float16Vector],
                 )))
             }
         };
